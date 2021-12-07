@@ -4,6 +4,12 @@ from rest_framework.response import Response
 from rest_framework import status
 import requests
 from .models import Username,Sdkversion
+from django.http import HttpResponse
+
+
+def index(request):
+    return HttpResponse("Hello, world")
+
 
 class GetAd(APIView):
     def get(self, request):

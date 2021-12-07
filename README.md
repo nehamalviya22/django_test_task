@@ -8,6 +8,9 @@ This application contained 3 API's
 
 Using python version - Python 3.6.9
 
+Clone the project - git clone https://github.com/nehamalviya22/django_test_task.git
+Then run command - cd advertisement
+
 Run with Docker Compose:
 
 Run this commands for installation-

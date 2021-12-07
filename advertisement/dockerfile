@@ -1,0 +1,29 @@
+FROM python:3.9-slim
+ENV PYTHONUNBUFFERED 1
+
+RUN apt-get update --fix-missing
+
+RUN apt-get install -y \
+	python3-pip \
+	python-dev \
+	libpq-dev \
+	libjpeg-dev \
+	libfreetype6-dev
+
+# CleanUp to Save space
+RUN apt-get autoclean -y \
+    clean -y \
+    autoremove -y
+
+# UPDATE/UPGRADE PIP
+RUN pip3 install --upgrade pip~=21.2.4 setuptools
+
+RUN mkdir /code
+ADD . /code/
+WORKDIR /code
+
+RUN pip3 install -r requirements.txt
+
+EXPOSE 8000
+
+CMD [ "0.0.0.0:8000", "advertisement.wsgi:application"]

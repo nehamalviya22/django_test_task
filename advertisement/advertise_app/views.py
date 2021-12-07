@@ -74,3 +74,39 @@ class Impression(APIView):
             sdk.save()
 
         return Response(status = 200)
+
+class Getstats(APIView):
+    def get(self, request):
+        filter_type = request.query_params.get("filter_type")
+        data = request.query_params.get("data")
+        if not filter_type or not data :
+            return Response({"message": "Please provide all following parameters filter_type,data"},status = 400)
+
+        if filter_type.lower() == "user":
+            user = username.objects.filter(username = data).last()
+            if user:
+                ad_count = user.ad_count
+                impression_count = user.impression_count
+                try:
+                    fill_rate = ad_count/impression_count
+                except:
+                    fill_rate = "Not Available"
+                    
+                return Response({"ad_count":ad_count,"impression_count":impression_count,
+                "fill_rate":fill_rate},status = 200)
+            else:
+                return Response({"Error": "no user found"},status=400)
+        else:
+            sdk = sdkversion.objects.filter(sdkversion = data).last()
+            if sdk:
+                ad_count = sdk.ad_count
+                impression_count = sdk.impression_count
+                try:
+                    fill_rate = ad_count/impression_count
+                except:
+                    fill_rate = "Not Available"
+
+                return Response({"ad_count":ad_count,"impression_count":impression_count,
+                "fill_rate":fill_rate},status=200)
+            else:
+                return Response({"Error": "no sdk version found"},status=400)

@@ -8,17 +8,21 @@ This application contained 3 API's
 
 Using python version - Python 3.6.9
 
-Clone the project - git clone https://github.com/nehamalviya22/django_test_task.git
 Then run command - cd advertisement
 
 Run with Docker Compose:
 
-Run this commands for installation-
+Run this commands for docker installation-
 1. sudo apt-get install -y docker.io
 2. Check version - docker -v
 3. sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 4. If prmission denied then run - sudo docker-compose run web bash
 5. Check compose version - docker-compose -v
+
+
+To migrate the database open new terminal in project directory and type:
+1. sudo docker-compose run web bash
+2. python manage.py migrate
 
 To run the program in local server use the following command:
 1. sudo docker-compose build

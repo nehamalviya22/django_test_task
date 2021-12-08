@@ -6,7 +6,7 @@ This application contained 3 API's
 2. Impression - you send some parameters and it saves impressions in a database based on the parameters and return 200 response.
 3. GetStats - you send a filter type and it will give you a json document with Fill rat.
 
-Using python version - Python 3.6.9
+Using python version - Python 3.10.1
 
 Then run command - cd advertisement
 

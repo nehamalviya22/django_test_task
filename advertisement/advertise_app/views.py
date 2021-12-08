@@ -72,7 +72,6 @@ class Getstats(APIView):
         filter_type = request.query_params.get("filter_type")
         data = request.query_params.get("data")
 
-        print(filter_type)
         if not filter_type and not data :
             return Response({"message": "Please provide all following parameters filter_type,data"},status = 400)
         elif not filter_type:
@@ -80,29 +79,32 @@ class Getstats(APIView):
         elif not data:
             return Response({"message": "Please provide all following parameters data"},status = 400)
 
-
-        if filter_type.lower() == "user":
-            ad_count = Information.objects.filter(username = data,media = 'Ad').count()
-            impression_count = Information.objects.filter(username = data,media = 'IMP').count()
-            if ad_count == 0 and impression_count == 0:
-                return Response({"message": "no user found"},status=400)
-            try:
-                fill_rate = ad_count/impression_count
-            except:
-                fill_rate = "Not Available"
+        match filter_type.lower():
+            case 'user':
+                ad_count = Information.objects.filter(username = data,media = 'Ad').count()
+                impression_count = Information.objects.filter(username = data,media = 'IMP').count()
+                if ad_count == 0 and impression_count == 0:
+                    return Response({"message": "no user found"},status=400)
+                try:
+                    fill_rate = ad_count/impression_count
+                except:
+                    fill_rate = "Not Available"
                     
-            return Response({"ad_count":ad_count,"impression_count":impression_count,
-            "fill_rate":fill_rate},status = 200)
+                return Response({"ad_count":ad_count,"impression_count":impression_count,
+                "fill_rate":fill_rate},status = 200)
             
-        else:
-            ad_count = Information.objects.filter(sdk_version = data,media = 'Ad').count()
-            impression_count = Information.objects.filter(sdk_version = data,media = 'IMP').count()
-            if ad_count == 0 and impression_count == 0:
-                return Response({"message": "no sdk version found"},status=400)
-            try:
-                fill_rate = ad_count/impression_count
-            except:
-                fill_rate = "Not Available"
+            case 'sdk_version':
+                ad_count = Information.objects.filter(sdk_version = data,media = 'Ad').count()
+                impression_count = Information.objects.filter(sdk_version = data,media = 'IMP').count()
+                if ad_count == 0 and impression_count == 0:
+                    return Response({"message": "no sdk version found"},status=400)
+                try:
+                    fill_rate = ad_count/impression_count
+                except:
+                    fill_rate = "Not Available"
                     
-            return Response({"ad_count":ad_count,"impression_count":impression_count,
-            "fill_rate":fill_rate},status = 200)
+                return Response({"ad_count":ad_count,"impression_count":impression_count,
+                "fill_rate":fill_rate},status = 200)
+            case _:        
+                return  Response({"message":"filter type is not valid, please enter either user or sdk_version."})
+
